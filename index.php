@@ -5,7 +5,11 @@
     // Pengecekan apakah sesi sudah ada
     if (isset($_SESSION['login'])) {
         // Jika sesi sudah ada, redirect ke halaman dashboard
-        header('Location: dashboard.php');  // Ubah sesuai dengan nama file dashboard Anda
+        if($_SESSION['role'] == 1) {
+          header('Location: views/penjual/dashboard.php');  // Ubah sesuai dengan nama file dashboard Anda
+        } else {
+          header('Location: views/pembeli/dashboard.php');
+        }
         exit();
     }
 

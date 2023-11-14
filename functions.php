@@ -36,7 +36,7 @@
             if (password_verify($password, $row['password'])) {
                 $_SESSION['login'] = true;
                 $_SESSION['role'] = $row['role'];
-                header('Location: ' . ($row['role'] == 1 ? 'dashboard.php' : 'dashboard_pembeli.php'));
+                header('Location: ' . ($row['role'] == 1 ? 'views/penjual/dashboard.php' : 'views/pembeli/dashboard.php'));
             } else {
                 echo "Login Gagal: Password tidak cocok";
             }

@@ -3,7 +3,12 @@
     require 'functions.php';
 
     if (isset($_SESSION['login'])) {
-        header('Location: dashboard.php'); // Redirect jika belum login
+        // Jika sesi sudah ada, redirect ke halaman dashboard
+        if($_SESSION['role'] == 1) {
+            header('Location: views/penjual/dashboard.php');  // Ubah sesuai dengan nama file dashboard Anda
+        } else {
+            header('Location: views/pembeli/dashboard.php');
+        }
         exit();
     }
 
