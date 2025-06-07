@@ -1,26 +1,5 @@
 <?php
-
-    function koneksi() {
-        $hostname = 'localhost';
-        $username = 'root';
-        $password = '';
-        $dbname = 'login_register';
-
-        return mysqli_connect($hostname, $username, $password, $dbname);
-    }
-
-    function session() {
-        // session_start();
-        $timeout = 25 * 60;
-        if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $timeout)) {
-            session_unset();
-            session_destroy();
-            header("Location: index.php");
-            exit();
-        }
-
-        $_SESSION['last_activity'] = time();
-    }
+require_once 'config/db.php';
 
     function login($data) {
         session_start();
@@ -36,6 +15,8 @@
             if (password_verify($password, $row['password'])) {
                 $_SESSION['login'] = true;
                 $_SESSION['role'] = $row['role'];
+                $_SESSION['fullname'] = $row['fullname'];
+                $_SESSION['user_id'] = $row['id'];
                 header('Location: ' . ($row['role'] == 1 ? 'views/penjual/dashboard.php' : 'views/pembeli/dashboard.php'));
             } else {
                 echo "Login Gagal: Password tidak cocok";
