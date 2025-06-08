@@ -14,6 +14,11 @@
             'product_id' => $_POST['id'],
             'quantity' => $_POST['quantity']
         ];
+
+        if ($_POST['quantity'] > $_POST['stok']) {
+            header("Location: ../views/pembeli/buying.php?id=". $_POST['id'] ."&nama=" . urlencode($_POST['nama']) . "&harga=".$_POST['harga']."&stok=" . $_POST['stok'] . "&error=stok");
+            exit();
+        }
     
         $result = addTransactionBuyer($data, $_SESSION['user_id']);
     

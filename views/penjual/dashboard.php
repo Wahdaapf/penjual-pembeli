@@ -88,6 +88,7 @@
                         <tr>
                         <th>Nama Produk</th>
                         <th>Harga</th>
+                        <th>Stok</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,6 +96,7 @@
                         <tr>
                             <td><?= htmlspecialchars($stat['nama']) ?></td>
                             <td>Rp<?= number_format($stat['harga'], 0, ',', '.') ?></td>
+                            <td><?= $stat['stok'] ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

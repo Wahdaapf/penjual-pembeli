@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_GET['id'], $_GET['nama'], $_GET['harga'])) {
+if (!isset($_GET['id'], $_GET['nama'], $_GET['harga'], $_GET['stok'])) {
     echo "Data produk tidak lengkap.";
     exit;
 }
@@ -9,6 +9,7 @@ if (!isset($_GET['id'], $_GET['nama'], $_GET['harga'])) {
 $id = $_GET['id'];
 $nama = $_GET['nama'];
 $harga = $_GET['harga'];
+$stok = $_GET['stok'];
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -37,11 +38,29 @@ $harga = $_GET['harga'];
 
 <body>
     <div class="container transaksi-container mt-5">
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'stok'): ?>
+            <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+                <div id="stokToast" class="toast align-items-center text-white bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                    Jumlah melebihi stok yang tersedia!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <h2 class="mb-4">💳 Transaksi Produk</h2>
 
         <div class="mb-3">
             <label class="form-label fw-bold">Nama Produk:</label>
             <p class="form-control-plaintext"><?= htmlspecialchars($nama) ?></p>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Stok:</label>
+            <p class="form-control-plaintext"><?= $stok ?></p>
         </div>
 
         <div class="mb-4">
@@ -54,6 +73,7 @@ $harga = $_GET['harga'];
             <input type="hidden" name="id" value="<?= $id ?>">
             <input type="hidden" name="nama" value="<?= htmlspecialchars($nama) ?>">
             <input type="hidden" name="harga" value="<?= $harga ?>">
+            <input type="hidden" name="stok" value="<?= $stok ?>">
 
             <div class="mb-3">
                 <label for="quantity" class="form-label">Jumlah:</label>
@@ -64,6 +84,16 @@ $harga = $_GET['harga'];
             <a href="../../views/pembeli/dashboard.php" class="btn btn-outline-secondary ms-2">← Kembali</a>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var toastEl = document.getElementById('stokToast');
+            if (toastEl) {
+                var toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

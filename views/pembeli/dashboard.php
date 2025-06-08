@@ -21,6 +21,12 @@
     }
 
     $chunks1 = array_chunk($data1, 5);
+
+    $stok_ada = array_filter($data1, fn($p) => $p['stok'] > 0);
+    $stok_kosong = array_filter($data1, fn($p) => $p['stok'] <= 0);
+    $data_terurut = array_merge($stok_ada, $stok_kosong);
+
+    $chunks1 = array_chunk($data_terurut, 5);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,22 +88,25 @@
                         <tr>
                         <th>Nama Produk</th>
                         <th>Harga</th>
+                        <th>Stok</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($chunk1 as $stat): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($stat['nama']) ?></td>
-                            <td>Rp<?= number_format($stat['harga'], 0, ',', '.') ?></td>
-                            <td>
-                                <a 
-                                    href="../../views/pembeli/buying.php?id=<?= $stat['id'] ?>&nama=<?= urlencode($stat['nama']) ?>&harga=<?= $stat['harga'] ?>" 
-                                    class="btn btn-primary btn-sm"
-                                    >
-                                        Beli Sekarang
-                                </a>
-                            </td>
-                        </tr>
+                            <tr class="<?= $stat['stok'] == 0 ? 'text-muted' : '' ?>">
+    <td><?= htmlspecialchars($stat['nama']) ?></td>
+    <td>Rp<?= number_format($stat['harga'], 0, ',', '.') ?></td>
+    <td><?= $stat['stok'] ?></td>
+    <td>
+        <a 
+            href="../../views/pembeli/buying.php?id=<?= $stat['id'] ?>&nama=<?= urlencode($stat['nama']) ?>&harga=<?= $stat['harga'] ?>&stok=<?= $stat['stok'] ?>" 
+            class="btn btn-sm <?= $stat['stok'] == 0 ? 'btn-secondary disabled' : 'btn-primary' ?>"
+            <?= $stat['stok'] == 0 ? 'tabindex="-1" aria-disabled="true"' : '' ?>
+        >
+            <?= $stat['stok'] == 0 ? 'Stok Habis' : 'Beli Sekarang' ?>
+        </a>
+    </td>
+</tr>
                         <?php endforeach; ?>
                     </tbody>
                     </table>
@@ -119,7 +128,7 @@
         </div>
         </div>
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var toastEl = document.getElementById('statusToast');

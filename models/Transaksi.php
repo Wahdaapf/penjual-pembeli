@@ -31,8 +31,19 @@
         $conn = koneksi();
         $product_id = $data['product_id'];
         $quantity = $data['quantity'];
+
+        $cekStok = mysqli_query($conn, "SELECT stok FROM products WHERE id = $product_id");
+        $produk = mysqli_fetch_assoc($cekStok);
     
         $query = "INSERT INTO transactions (user_id, product_id, quantity) VALUES ('$pembeli_id', '$product_id', '$quantity')";
-        return mysqli_query($conn, $query);
+        $result = mysqli_query($conn, $query);
+    
+        if ($result) {
+            // Kurangi stok
+            $stokBaru = $produk['stok'] - $quantity;
+            mysqli_query($conn, "UPDATE products SET stok = $stokBaru WHERE id = $product_id");
+        }
+
+        return $result;
     }
 ?>
