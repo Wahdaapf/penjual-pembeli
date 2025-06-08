@@ -50,6 +50,19 @@
     <div class="container">
         <a href="?logout=true" class="btn btn-outline-danger logout-btn">Logout</a>
 
+        <?php if (isset($_GET['status'])): ?>
+            <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+                <div id="statusToast" class="toast align-items-center text-white <?= $_GET['status'] === 'sukses' ? 'bg-success' : 'bg-danger' ?>" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                    <?= $_GET['status'] === 'sukses' ? 'Transaksi berhasil!' : 'Transaksi gagal!' ?>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <div class="dashboard-header ">
             <h1 class="text-primary">📋 Dashboard Pembeli</h1>
             <p class="lead">Selamat datang kembali, lihat produk terbaru disini dan riwayat transaksi mu.</p>
@@ -106,7 +119,17 @@
         </div>
         </div>
     </div>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var toastEl = document.getElementById('statusToast');
+            if (toastEl) {
+                var toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

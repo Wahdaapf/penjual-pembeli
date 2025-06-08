@@ -69,14 +69,19 @@
                         <tr>
                         <th>Nama Produk</th>
                         <th>Jumlah</th>
+                        <th>Nama Penjual</th>
+                        <th>Total</th>
+                        <th>Tanggal</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($chunk as $stat): ?>
                         <tr>
-                        <td><?= htmlspecialchars($stat['product_id']) ?></td>
+                        <td><?= htmlspecialchars($stat['product_name']) ?></td>
                         <td><?= $stat['quantity'] ?></td>
-                        <td>Rp<?= number_format($stat['harga'], 0, ',', '.') ?></td>
+                        <td><?= $stat['seller_name'] ?></td>
+                        <td>Rp<?= number_format($stat['quantity'] * $stat['product_price'], 0, ',', '.') ?></td>
+                        <td><?= $stat['created_at'] ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
