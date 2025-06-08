@@ -1,8 +1,10 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once 'config/db.php';
 
     function login($data) {
-        session_start();
         $conn = koneksi();
         $email = $data['email'];
         $password = $data['password'];
@@ -45,9 +47,8 @@ require_once 'config/db.php';
     }
 
     function logout() {
-        session_start();
         session_destroy();
-        header("Location: index.php");
+        header("Location: " . BASE_URL . "index.php");
         exit;
     }
 

@@ -5,6 +5,11 @@
         return mysqli_query($conn, "SELECT * FROM products WHERE user_id = $user_id");
     }  
 
+    function getAllProduk() {
+        $conn = koneksi();
+        return mysqli_query($conn, "SELECT * FROM products");
+    }  
+
     function getStatistikProduk($user_id) {
         $conn = koneksi();
         return mysqli_query($conn, "
@@ -25,7 +30,7 @@
         $harga = $data['harga'];
         $stok = $data['stok'];
     
-        $query = "INSERT INTO produk (nama, harga, stok, penjual_id) VALUES ('$nama', '$harga', '$stok', '$penjual_id')";
+        $query = "INSERT INTO products (nama, harga, stok, user_id) VALUES ('$nama', '$harga', '$stok', '$penjual_id')";
         return mysqli_query($conn, $query);
     }
 ?>

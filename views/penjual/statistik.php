@@ -19,12 +19,12 @@
 <?php
     #pagination
 
-    $data1 = [];
-    while ($stat = mysqli_fetch_assoc($produkPenjual)) {
-        $data1[] = $stat;
+    $data = [];
+    while ($stat = mysqli_fetch_assoc($statistik)) {
+        $data[] = $stat;
     }
 
-    $chunks1 = array_chunk($data1, 5);
+    $chunks = array_chunk($data, 5);
 ?>
 
 <!DOCTYPE html>
@@ -58,39 +58,41 @@
     <div class="dashboard-header ">
       <h1 class="text-primary">📋 Dashboard Penjual</h1>
       <p class="lead">Selamat datang kembali, kelola produk dan pantau statistik penjualanmu di sini.</p>
-      <a href="produk.php" class="btn btn-success">+ Tambah Produk</a>
-      <a href="statistik.php" class="btn btn-warning">Lihat Statistik</a>
+      <a href="dashboard.php" class="btn btn-warning"><- Kembali</a>
     </div>
 
-    <!-- Daftar Produk -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-            📦 Daftar Produk Anda
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            📊 Statistik Penjualan
         </div>
         <div class="card-body">
-            <?php foreach ($chunks1 as $index => $chunk): ?>
-                <div class="tab-content" id="tab-<?= $index ?>" style="display: none;">
-                    <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                        <th>Nama Produk</th>
-                        <th>Harga</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($chunk as $stat): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($stat['nama']) ?></td>
-                            <td>Rp<?= number_format($stat['harga'], 0, ',', '.') ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                    </table>
-                </div>
+            <?php foreach ($chunks as $index => $chunk): ?>
+            <div class="tab-content" id="tab-<?= $index ?>" style="display: none;">
+                <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                    <th>Produk</th>
+                    <th>Harga</th>
+                    <th>Total Unit Terjual</th>
+                    <th>Jumlah Transaksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($chunk as $stat): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($stat['nama']) ?></td>
+                        <td>Rp<?= number_format($stat['harga'], 0, ',', '.') ?></td>
+                        <td><?= (int)$stat['total_terjual'] ?></td>
+                        <td><?= (int)$stat['jumlah_transaksi'] ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                </table>
+            </div>
             <?php endforeach; ?>
 
             <div class="mb-3">
-                <?php foreach ($chunks1 as $index => $_): ?>
+                <?php foreach ($chunks as $index => $_): ?>
                     <button class="btn btn-secondary tab-btn me-2" onclick="showTab(<?= $index ?>)"><?= $index + 1 ?></button>
                 <?php endforeach; ?>
             </div>

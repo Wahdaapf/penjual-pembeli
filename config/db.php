@@ -21,4 +21,6 @@
         $_SESSION['last_activity'] = time();
     }
 
+    define('BASE_URL', '/penjual-pembeli/');
+
 ?>

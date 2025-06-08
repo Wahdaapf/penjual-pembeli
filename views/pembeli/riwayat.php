@@ -15,12 +15,12 @@
     }
 ?>
 <?php
-    $data1 = [];
-    while ($stat = mysqli_fetch_assoc($produk)) {
-        $data1[] = $stat;
+    $data = [];
+    while ($stat = mysqli_fetch_assoc($transactionsBuyer)) {
+        $data[] = $stat;
     }
 
-    $chunks1 = array_chunk($data1, 5);
+    $chunks = array_chunk($data, 5);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,37 +53,30 @@
         <div class="dashboard-header ">
             <h1 class="text-primary">📋 Dashboard Pembeli</h1>
             <p class="lead">Selamat datang kembali, lihat produk terbaru disini dan riwayat transaksi mu.</p>
-            <a href="riwayat.php" class="btn btn-warning">Lihat Riwayat Transaksi</a>
+            <a href="dashboard.php" class="btn btn-warning"><- Kembali</a>
         </div>
 
-        <!-- Daftar Produk -->
-        <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-            📦 Produk Dijual
+        <!-- Statistik Penjualan -->
+        <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            📊 Riwayat Transaksi
         </div>
         <div class="card-body">
-            <?php foreach ($chunks1 as $index => $chunk1): ?>
+            <?php foreach ($chunks as $index => $chunk): ?>
                 <div class="tab-content" id="tab-<?= $index ?>" style="display: none;">
                     <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                         <th>Nama Produk</th>
-                        <th>Harga</th>
+                        <th>Jumlah</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($chunk1 as $stat): ?>
+                        <?php foreach ($chunk as $stat): ?>
                         <tr>
-                            <td><?= htmlspecialchars($stat['nama']) ?></td>
-                            <td>Rp<?= number_format($stat['harga'], 0, ',', '.') ?></td>
-                            <td>
-                                <a 
-                                    href="../../views/pembeli/buying.php?id=<?= $stat['id'] ?>&nama=<?= urlencode($stat['nama']) ?>&harga=<?= $stat['harga'] ?>" 
-                                    class="btn btn-primary btn-sm"
-                                    >
-                                        Beli Sekarang
-                                </a>
-                            </td>
+                        <td><?= htmlspecialchars($stat['product_id']) ?></td>
+                        <td><?= $stat['quantity'] ?></td>
+                        <td>Rp<?= number_format($stat['harga'], 0, ',', '.') ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -91,7 +84,7 @@
                 </div>
             <?php endforeach; ?>
             <div class="mb-3">
-                <?php foreach ($chunks1 as $index => $_): ?>
+                <?php foreach ($chunks as $index => $_): ?>
                     <button class="btn btn-secondary tab-btn me-2" onclick="showTab(<?= $index ?>)"><?= $index + 1 ?></button>
                 <?php endforeach; ?>
             </div>
